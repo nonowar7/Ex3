@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = null;
+}
+    
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        .content {
+            width:100%;
+            height:100%;
+        }
+
+    </style>
+    <meta name="viewport" content="width=device-width" />
+    <title>display</title>
+</head>
+<body class="content" background="~/Images/export-map-share.png">
+    <canvas id="myCanvas"></canvas>
+    <script>
+
+        var canvas = document.getElementById("myCanvas");
+        canvas.width = document.getElementById("myCanvas").style.width = "100vw";
+        canvas.height = document.getElementById("myCanvas").style.height = "100vh";
+
+        var ctx = canvas.getContext("2d");
+        var theLon = ((canvas.height) / 2);
+        var theLat = ((canvas.width) / 2) + (((@ViewBag.lat) / 50) * (canvas.width) / 2);
+        ctx.strokeStyle = "red";
+        ctx.fillRect(150, 150, 25, 25);
+        console.log(canvas.height);
+        console.log(canvas.width);
+        console.log(@ViewBag.lon);
+        console.log(@ViewBag.lat);
+        console.log(theLat);
+        console.log(theLon);
+
+    </script>
+
+
+</body>
+</html>
