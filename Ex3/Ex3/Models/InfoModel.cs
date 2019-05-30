@@ -8,6 +8,7 @@ namespace Ex3.Models
 {
     public class InfoModel
     {
+
         [Required]
         public double Lon { get; set; }
         [Required]

@@ -33,14 +33,38 @@ namespace Ex3.Controllers
             Client client = new Client();
             client.connect(ip, port);
 
-            string lat = client.getInfo("latitude");
-            string lon = client.getInfo("longitude");
+            string latLine = client.getLine("latitude");
+            string lonLine = client.getLine("longitude");
+
+            string lat = client.getData(latLine);
+            string lon = client.getData(lonLine);
 
             ViewBag.lat = Double.Parse(lat);
             ViewBag.lon = Double.Parse(lon);
 
             return View();
         }
+        /*
+        [HttpGet]
+        public ActionResult display(string ip, int port, int num)
+        {
 
+            // need to check if the ip+port are good?
+
+            Client client = new Client();
+            client.connect(ip, port);
+
+            string latLine = client.getLine("latitude");
+            string lonLine = client.getLine("longitude");
+
+            string lat = client.getData(latLine);
+            string lon = client.getData(lonLine);
+            ViewBag.lat = Double.Parse(lat);
+            ViewBag.lon = Double.Parse(lon);
+            ViewBag.time = num;
+
+            return View();
+        }
+        */
     }
 }

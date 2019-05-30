@@ -8,35 +8,45 @@
 <html>
 <head>
     <style>
-        .content {
+        .bg1 {
             width:100%;
             height:100%;
+            background-size:cover;
         }
 
     </style>
     <meta name="viewport" content="width=device-width" />
     <title>display</title>
 </head>
-<body class="content" background="~/Images/export-map-share.png">
+<body background="~/Images/export-map-share.png" class="bg1">
     <canvas id="myCanvas"></canvas>
     <script>
 
         var canvas = document.getElementById("myCanvas");
-        canvas.width = document.getElementById("myCanvas").style.width = "100vw";
-        canvas.height = document.getElementById("myCanvas").style.height = "100vh";
-
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         var ctx = canvas.getContext("2d");
-        var theLon = ((canvas.height) / 2);
-        var theLat = ((canvas.width) / 2) + (((@ViewBag.lat) / 50) * (canvas.width) / 2);
+
+        var theLat = (@ViewBag.lat + 90);
+        var theLon = @ViewBag.lon + 180;
+
         ctx.strokeStyle = "red";
-        ctx.fillRect(150, 150, 25, 25);
-        console.log(canvas.height);
+        ctx.fillRect(theLon, theLat, 5, 5);
+        ctx.fillRect(1000, 150, 5, 5);
+        ctx.fillRect(1000, 400, 5, 5);
+
+        console.log(window.innerWidth);
+        console.log(window.innerHeight);
+
         console.log(canvas.width);
+        console.log(canvas.height);
+
         console.log(@ViewBag.lon);
         console.log(@ViewBag.lat);
-        console.log(theLat);
-        console.log(theLon);
 
+
+        console.log(theLon);
+        console.log(theLat);
     </script>
 
 

@@ -31,7 +31,7 @@ namespace Ex3.Communication
             }
         }
 
-        public string getInfo(string kind)
+        public string getLine(string kind)
         {
             string request = "get ";
             switch (kind)
@@ -54,24 +54,30 @@ namespace Ex3.Communication
             }
 
             request += Consts.NEW_LINE;
+            return request;
+
+        }
+
+        public string getData(string line)
+        {
             string info = "";
-            
             try
             {
                 ASCIIEncoding asen = new ASCIIEncoding();
-                byte[] buffer = asen.GetBytes(request);
+                byte[] buffer = asen.GetBytes(line);
                 NetworkStream stream = client.GetStream();
                 stream.Write(buffer, 0, buffer.Length);
 
                 byte[] readBytes = new byte[client.ReceiveBufferSize];
                 int sizeRead = stream.Read(readBytes, 0, client.ReceiveBufferSize);
-                if (sizeRead >0)
+                if (sizeRead > 0)
                 {
                     info = System.Text.Encoding.UTF8.GetString(readBytes, 0, readBytes.Length);
-                    string []splitInfo = info.Split('\'');
+                    string[] splitInfo = info.Split('\'');
                     info = splitInfo[1];
 
-                } else
+                }
+                else
                 {
                     // print message?
                 }
