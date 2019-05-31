@@ -20,7 +20,6 @@ namespace Ex3.Controllers
         // GET: Info
         public ActionResult Index()
         {
-
             return View();
         }
 
