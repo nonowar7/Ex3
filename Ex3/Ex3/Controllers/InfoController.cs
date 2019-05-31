@@ -43,9 +43,9 @@ namespace Ex3.Controllers
 
             return View();
         }
-        /*
+        
         [HttpGet]
-        public ActionResult display(string ip, int port, int num)
+        public ActionResult displayT(string ip, int port, int num)
         {
 
             // need to check if the ip+port are good?
@@ -64,6 +64,6 @@ namespace Ex3.Controllers
 
             return View();
         }
-        */
+        
     }
 }
