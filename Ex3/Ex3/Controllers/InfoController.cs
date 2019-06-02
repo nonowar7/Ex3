@@ -7,6 +7,8 @@ using Ex3.Models;
 using Ex3.Communication;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using System.Drawing;
+using System.Text;
+using System.Xml;
 
 namespace Ex3.Controllers
 {
@@ -26,44 +28,65 @@ namespace Ex3.Controllers
         [HttpGet]
         public ActionResult display(string ip, int port)
         {
-
             // need to check if the ip+port are good?
 
-            Client client = new Client();
+            Client client = Client.Instance;
             client.connect(ip, port);
 
-            string latLine = client.getLine("latitude");
-            string lonLine = client.getLine("longitude");
+            InfoModel info = InfoModel.Instance;
 
-            string lat = client.getData(latLine);
-            string lon = client.getData(lonLine);
+            double lat = info.GetLat();
+            double lon = info.GetLon();
 
-            ViewBag.lat = Double.Parse(lat);
-            ViewBag.lon = Double.Parse(lon);
-
+            ViewBag.lat = lat;
+            ViewBag.lon = lon;
             return View();
         }
         
         [HttpGet]
-        public ActionResult displayT(string ip, int port, int num)
+        public ActionResult displayT(string ip, int port, int time)
         {
 
             // need to check if the ip+port are good?
 
-            Client client = new Client();
+            Client client = Client.Instance;
             client.connect(ip, port);
 
-            string latLine = client.getLine("latitude");
-            string lonLine = client.getLine("longitude");
-
-            string lat = client.getData(latLine);
-            string lon = client.getData(lonLine);
-            ViewBag.lat = Double.Parse(lat);
-            ViewBag.lon = Double.Parse(lon);
-            ViewBag.time = num;
+            ViewBag.time = time;
 
             return View();
         }
-        
+
+        [HttpPost]
+        public string GetPosition()
+        {
+            InfoModel info = InfoModel.Instance;
+            ViewBag.lat = info.GetLat();
+            ViewBag.lon = info.GetLon();
+
+            var pos = InfoModel.Instance;
+            string posString = pos.Lat.ToString() + "," + pos.Lon.ToString();
+            return posString;
+         //   return ToXml(pos);
+        }
+
+        private string ToXml(InfoModel position)
+        {
+            //Initiate XML stuff
+            StringBuilder sb = new StringBuilder();
+            XmlWriterSettings settings = new XmlWriterSettings();
+            XmlWriter writer = XmlWriter.Create(sb, settings);
+
+            writer.WriteStartDocument();
+            writer.WriteStartElement("positions");
+
+            position.ToXml(writer);
+
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
+            writer.Flush();
+            return sb.ToString();
+        }
+
     }
 }

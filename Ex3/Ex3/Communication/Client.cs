@@ -11,20 +11,32 @@ namespace Ex3.Communication
     public class Client
     {
 
-        private TcpClient client;
-        public Client()
-        {
-            client = new TcpClient();
+        private static Client s_instace = null;
+        private static TcpClient client;
+        private bool connected = false;
 
+        public static Client Instance
+        {
+            get
+            {
+                if (s_instace == null)
+                {
+                    s_instace = new Client();
+                    client = new TcpClient();
+                }
+                return s_instace;
+            }
         }
 
+      
         public void connect(string ip, int port)
         {
-            while(true)
+            while(!connected)
             {
                 try
                 {
                     client.Connect(ip, port);
+                    connected = true;
                     break;
                 }
                 catch { }
@@ -75,7 +87,6 @@ namespace Ex3.Communication
                     info = System.Text.Encoding.UTF8.GetString(readBytes, 0, readBytes.Length);
                     string[] splitInfo = info.Split('\'');
                     info = splitInfo[1];
-
                 }
                 else
                 {
