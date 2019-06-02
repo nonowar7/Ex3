@@ -25,34 +25,17 @@ namespace Ex3.Controllers
             return View();
         }
 
+       
         [HttpGet]
-        public ActionResult display(string ip, int port)
-        {
-            // need to check if the ip+port are good?
-
-            Client client = Client.Instance;
-            client.connect(ip, port);
-
-            InfoModel info = InfoModel.Instance;
-
-            double lat = info.GetLat();
-            double lon = info.GetLon();
-
-            ViewBag.lat = lat;
-            ViewBag.lon = lon;
-            return View();
-        }
-        
-        [HttpGet]
-        public ActionResult displayT(string ip, int port, int time)
+        public ActionResult display(string ip, int port, int? time=0)
         {
 
             // need to check if the ip+port are good?
-
-            Client client = Client.Instance;
-            client.connect(ip, port);
 
             ViewBag.time = time;
+
+            Client client = Client.Instance;
+            client.connect(ip, port);
 
             return View();
         }

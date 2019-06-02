@@ -2,45 +2,85 @@
 @{
     Layout = null;
 }
-    
+
 <!DOCTYPE html>
 
 <html>
 <head>
     <style>
         .bg1 {
-            width:100%;
-            height:100%;
-            background-size:cover;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
         }
-
     </style>
+
     <meta name="viewport" content="width=device-width" />
-    <title>display</title>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <title>displayT</title>
 </head>
 <body background="~/Images/export-map-share.png" class="bg1">
     <canvas id="myCanvas"></canvas>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script>
 
         var canvas = document.getElementById("myCanvas");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         var ctx = canvas.getContext("2d");
+        ctx.beginPath();
 
-        var theLat = (((@ViewBag.lat) + 90) * canvas.height / 360);
-        if ((@ViewBag.lat) < 0) {
-            theLat = canvas.height - theLat; 
+        if (@ViewBag.time == 0) {
+            $.ajax({
+                type: "POST",
+                url: '/Info/GetPosition',
+                success: function (obj) {
+                    var arr = obj.split(",");
+                    var lat = arr[0];
+                    var lon = arr[1];
+                    drawPosition(lat, lon);
+                }
+
+            });
+
+        } else {
+
+            var IntervalTime = 1000 / @ViewBag.time
+
+                setInterval(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Info/GetPosition',
+                        success: function (obj) {
+                            var arr = obj.split(",");
+                            var lat = arr[0];
+                            var lon = arr[1];
+                            drawPosition(lat, lon);
+                        }
+
+                    });
+                }, IntervalTime);
+
         }
 
-        var theLon = ((@ViewBag.lon) + 180) * canvas.width / 380;
+        function drawPosition(lat, lon) {
 
-        ctx.beginPath();
-        ctx.strokeStyle = "red";
-        ctx.fillStyle = "red";
-        ctx.arc(theLon, theLat, 5, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.stroke();
-       
+            var theLat = (((parseFloat(lat)) + 90) * canvas.height / 360);
+
+            if ((parseFloat(lat)) < 0) {
+                theLat = canvas.height - theLat;
+            }
+            var theLon = ((parseFloat(lon)) + 180) * canvas.width / 380;
+
+            ctx.strokeStyle = "red";
+            ctx.fillStyle = "red";
+            ctx.arc(theLon, theLat, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+        }
+
     </script>
+
 </body>
 </html>
