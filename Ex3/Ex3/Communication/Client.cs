@@ -67,9 +67,7 @@ namespace Ex3.Communication
 
             request += Consts.NEW_LINE;
             return request;
-
         }
-
         public string getData(string line)
         {
             string info = "";

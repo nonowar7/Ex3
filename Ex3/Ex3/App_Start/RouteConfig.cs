@@ -21,10 +21,7 @@ namespace Ex3
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Info", action = "Index", id = UrlParameter.Optional }
             );
-
-
-
-
+            
         }
     }
 }

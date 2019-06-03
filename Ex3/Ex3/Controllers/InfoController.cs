@@ -9,6 +9,7 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 using System.Drawing;
 using System.Text;
 using System.Xml;
+using System.IO;
 
 namespace Ex3.Controllers
 {
@@ -29,19 +30,49 @@ namespace Ex3.Controllers
         [HttpGet]
         public ActionResult display(string ip, int port, int? time=0)
         {
+            System.Net.IPAddress validIp = null;
+            if (System.Net.IPAddress.TryParse(ip, out validIp))
+            {
+                // need to check if the ip+port are good?
+                ViewBag.time = time;
 
-            // need to check if the ip+port are good?
+                Client client = Client.Instance;
+                client.connect(ip, port);
 
-            ViewBag.time = time;
+                return View();
 
-            Client client = Client.Instance;
-            client.connect(ip, port);
+            } else
+            {
+                ViewBag.time = port;
+                ViewBag.fileName = ip;
 
-            return View();
+                return View();
+            }
+
         }
 
         [HttpPost]
-        public string GetPosition()
+        public string[] GetPositionsFromFile()
+        {
+            string[] lines;
+            List<string> list = new List<string>();
+
+            FileStream fs = new FileStream("Flight1", FileMode.Open, FileAccess.Read);
+            using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    list.Add(line);
+
+                }
+            }
+            lines = list.ToArray();
+            return lines;
+        }
+
+        [HttpPost]
+        public string GetPositionFromSimulator()
         {
             InfoModel info = InfoModel.Instance;
             ViewBag.lat = info.GetLat();
